@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SN34KER</string>
+    <string name="txtLogo">SN34KER</string>
+    <string name="txtLoginLogo">Login</string>
+    <string name="edEmailInput">Email</string>
+    <string name="edPassInput">Password</string>
+    <string name="btnLogin">Login</string>
+    <string name="txtRegister">New Here? Create Account here!</string>
+    <string name="edRePass">Confirm Password</string>
+    <string name="txtRegiLogo">Register</string>
+    <string name="btnRegister">Register</string>
+    <string name="txtLoginInfo">Already have an Account? Sign in Here!</string>
+</resources>
