@@ -1,8 +1,5 @@
 package com.example.sn34ker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,19 +42,19 @@ public class RegisterActivity extends AppCompatActivity {
         pbRegi = findViewById(R.id.pbRegi);
 
         //If user is logging in.
-        if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
-        
+        //if(fAuth.getCurrentUser() != null){
+        //  startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        //  finish();
+        // }
+
         btnRegi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = edEmail.getText().toString().trim();
                 String password = edPass.getText().toString().trim();
                 String rePass = edRepass.getText().toString().trim();
-                
-                
+
+
                 //Input Validation.
                 if(TextUtils.isEmpty(email)){
                     edEmail.setError("Email is required.");
@@ -77,16 +77,16 @@ public class RegisterActivity extends AppCompatActivity {
 //                    edRepass.setError("Password must be match.");
 //                    return;
 //                }
-                
+
                 pbRegi.setVisibility(View.VISIBLE);
-                
+
                 fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         try{
                             if(task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "User Created.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             } else{
                                 Toast.makeText(RegisterActivity.this, "Sorry, we couldn't make a user in some reason.", Toast.LENGTH_SHORT).show();
                                 pbRegi.setVisibility(View.GONE);
@@ -102,7 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
             }
         });
     }
