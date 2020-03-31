@@ -10,4 +10,21 @@
     <string name="txtRegiLogo">Register</string>
     <string name="btnRegister">Register</string>
     <string name="txtLoginInfo">Already have an Account? Sign in Here!</string>
+    <string name="txtAddProduct">Add New Product</string>
+    <string name="etProductName">Product Name</string>
+    <string name="etProductBrand">Product Brand</string>
+    <string name="etProductPrice">Product Price</string>
+    <string name="etProductSize" />
+    <string name="etProductUsSize">Product US Size</string>
+    <string name="btnSaveProduct">Save</string>
+
+    <string-array name="sneakerType">
+        <item>Athletic Kick</item>
+        <item>PlimSoll</item>
+        <item>High-Top</item>
+        <item>Authentic</item>
+        <item>Slip-On</item>
+        <item>Leather</item>
+        <item>Canvas</item>
+    </string-array>
 </resources>
