@@ -1,7 +1,10 @@
 package com.example.sn34ker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +38,6 @@ public class ProductAddActivity extends AppCompatActivity {
         etProductSize = findViewById(R.id.etProductUsSize);
         spProductType = findViewById(R.id.spProductType);
         btnSaveProduct = findViewById(R.id.btnSaveProduct);
-
         //Get current date
         final Date curDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -80,7 +82,10 @@ public class ProductAddActivity extends AppCompatActivity {
                 try{
                     myProductModel = new ProductModel(-1, etProductName.getText().toString().trim(), etProductBrand.getText().toString().trim(), selectedType,
                             Double.parseDouble(etProductCAPrice.getText().toString().trim()), Double.parseDouble(etProductSize.getText().toString().trim()), currentDate);
-                    Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+
                 } catch (Exception ex){
                     Toast.makeText(ProductAddActivity.this, "Something went wrong. "+ex.getMessage(), Toast.LENGTH_SHORT).show();
                     myProductModel = new ProductModel(-1,"error", "error", "error", 0, 0, "error");
@@ -88,6 +93,7 @@ public class ProductAddActivity extends AppCompatActivity {
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(ProductAddActivity.this);
                 boolean success = dataBaseHelper.addOne(myProductModel);
+
                 Toast.makeText(ProductAddActivity.this, "Is Success? "+success, Toast.LENGTH_SHORT).show();
             }
         });
