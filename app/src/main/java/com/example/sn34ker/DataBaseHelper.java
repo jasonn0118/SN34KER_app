@@ -2,10 +2,14 @@ package com.example.sn34ker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -58,5 +62,49 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         else{
             return true;
         }
+    }
+
+    //Get every product list.
+    public List<ProductModel> getEveryThing(){
+        List<ProductModel> returnList = new ArrayList<>();
+
+        //Get Product data from our data base.
+        String queryString = "SELECT * FROM " + PRODUCT_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if(cursor.moveToFirst()) {
+            // loop through the result
+            do{
+                int productId = cursor.getInt(0);
+                String productName = cursor.getString(1);
+                String productBrand = cursor.getString(2);
+                String productType = cursor.getString(3);
+                Double productPrice = cursor.getDouble(4);
+                Double productSize = cursor.getDouble(5);
+                String productUpdateDate = cursor.getString(6);
+
+                ProductModel myProduct = new ProductModel(productId, productName, productBrand, productType, productPrice, productSize, productUpdateDate);
+                returnList.add(myProduct);
+            } while(cursor.moveToNext());
+        } else {
+            //failure. do not add anything at this point.
+        }
+
+        cursor.close();
+        db.close();
+
+        return returnList;
+    }
+
+    public Cursor readAllProductData(){
+        String queryString = "SELECT * FROM " + PRODUCT_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(queryString, null);
+        }
+        return cursor;
     }
 }

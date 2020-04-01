@@ -1,5 +1,6 @@
 package com.example.sn34ker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
 
             switch (item.getItemId()){
+                case R.id.AddProduct:
+                    startActivity(new Intent(getApplicationContext(), ProductAddActivity.class));
+                    break;
                 case R.id.home:
                     selectedFragment = new HomeFragment();
                     break;

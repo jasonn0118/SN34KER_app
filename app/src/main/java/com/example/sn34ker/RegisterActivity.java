@@ -42,10 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
         pbRegi = findViewById(R.id.pbRegi);
 
         //If user is logging in.
-        //if(fAuth.getCurrentUser() != null){
-        //  startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        //  finish();
-        // }
+        if(fAuth.getCurrentUser() != null){
+          startActivity(new Intent(getApplicationContext(), MainActivity.class));
+          finish();
+         }
 
         btnRegi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                         try{
                             if(task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "User Created.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             } else{
                                 Toast.makeText(RegisterActivity.this, "Sorry, we couldn't make a user in some reason.", Toast.LENGTH_SHORT).show();
                                 pbRegi.setVisibility(View.GONE);
