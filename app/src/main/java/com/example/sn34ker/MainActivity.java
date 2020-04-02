@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.AddProduct:
                     startActivity(new Intent(getApplicationContext(), ProductAddActivity.class));
+                    finish();
                     break;
                 case R.id.home:
                     selectedFragment = new HomeFragment();

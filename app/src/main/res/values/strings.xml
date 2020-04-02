@@ -18,6 +18,7 @@
     <string name="etProductUsSize">Product US Size</string>
     <string name="btnSaveProduct">Save</string>
     <string name="devsTxtView">Our Developers</string>
+    <string name="btnSelectProduct">Select Picture</string>
 
     <string-array name="sneakerType">
         <item>Athletic Kick</item>
