@@ -1,4 +1,6 @@
-package com.example.sn34ker;
+package com.example.sn34ker.datamodels;
+
+import android.graphics.Bitmap;
 
 import java.util.Date;
 
@@ -10,9 +12,11 @@ public class ProductModel {
     private double CA_price;
     private double US_Size;
     private String updatedDate;
+    private Bitmap product_image;
 
-    public ProductModel(int id, String name, String brand, String type, double CA_price, double US_Size, String updatedDate) {
+    public ProductModel(int id, Bitmap product_image, String name, String brand, String type, double CA_price, double US_Size, String updatedDate) {
         this.id = id;
+        this.product_image = product_image;
         this.name = name;
         this.brand = brand;
         this.type = type;
@@ -81,6 +85,14 @@ public class ProductModel {
         this.updatedDate = updatedDate;
     }
 
+    public Bitmap getProduct_image() {
+        return product_image;
+    }
+
+    public void setProduct_image(Bitmap product_image) {
+        this.product_image = product_image;
+    }
+
     @Override
     public String toString() {
         return "ProductModel{" +
@@ -90,7 +102,8 @@ public class ProductModel {
                 ", type='" + type + '\'' +
                 ", CA_price=" + CA_price +
                 ", US_Size=" + US_Size +
-                ", updatedDate=" + updatedDate +
+                ", updatedDate='" + updatedDate + '\'' +
+                ", product_image=" + product_image +
                 '}';
     }
 }

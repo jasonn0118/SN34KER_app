@@ -1,18 +1,23 @@
 package com.example.sn34ker;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.sn34ker.datamodels.ProductModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,22 +27,28 @@ import java.util.List;
 
 public class ProductAddActivity extends AppCompatActivity {
 
+    ImageView ivProduct;
     EditText etProductName, etProductBrand, etProductCAPrice, etProductSize;
     Spinner spProductType;
     Button btnSaveProduct;
-    String currentDate, selectedType;
+    String currentDate, selectedType, selectedPicName;
 
+    private static final int PICK_IMAGE_REQUEST = 80;
+    private Uri imageFilePath;
+    private Bitmap imageToStore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_add);
 
+        ivProduct = findViewById(R.id.imgProduct);
         etProductName = findViewById(R.id.etProductName);
         etProductBrand = findViewById(R.id.etProductBrand);
         etProductCAPrice = findViewById(R.id.etProcuctPrice);
         etProductSize = findViewById(R.id.etProductUsSize);
         spProductType = findViewById(R.id.spProductType);
         btnSaveProduct = findViewById(R.id.btnSaveProduct);
+
         //Get current date
         final Date curDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -80,15 +91,15 @@ public class ProductAddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ProductModel myProductModel;
                 try{
-                    myProductModel = new ProductModel(-1, etProductName.getText().toString().trim(), etProductBrand.getText().toString().trim(), selectedType,
+                    myProductModel = new ProductModel(-1, imageToStore, etProductName.getText().toString().trim(), etProductBrand.getText().toString().trim(), selectedType,
                             Double.parseDouble(etProductCAPrice.getText().toString().trim()), Double.parseDouble(etProductSize.getText().toString().trim()), currentDate);
-//                    Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_LONG).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
 
                 } catch (Exception ex){
                     Toast.makeText(ProductAddActivity.this, "Something went wrong. "+ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    myProductModel = new ProductModel(-1,"error", "error", "error", 0, 0, "error");
+                    myProductModel = new ProductModel(-1, imageToStore,"error", "error", "error", 0, 0, "error");
                 }
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(ProductAddActivity.this);
@@ -99,11 +110,33 @@ public class ProductAddActivity extends AppCompatActivity {
         });
 
 
+    }
+    public void chooseImage (View objectView){
 
+        try{
+            Intent objectIntent = new Intent();
+            objectIntent.setType("image/*");
+            objectIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(objectIntent, PICK_IMAGE_REQUEST);
+        }catch (Exception ex){
+            Toast.makeText(this, "Choose Image is something wrong" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode==PICK_IMAGE_REQUEST && resultCode ==RESULT_OK && data != null && data.getData() != null){
+                imageFilePath = data.getData();
+                imageToStore = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePath);
 
-
-
+                ivProduct.setImageBitmap(imageToStore);
+                ivProduct.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception ex){
+            Toast.makeText(this, "onActivityResult: " +ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
