@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ShopFragment extends Fragment {
     DataBaseHelper dbHelper;
-    RecyclerView product_recyclerView;
+    RecyclerView product_recyclerView,nike_recycleView,adidas_recycleView;
 //    ArrayList<String> product_name, product_brand, product_price;
 //    ArrayList<Byte[]> product_img;
     ProductAdapter productAdapter;
@@ -35,15 +35,42 @@ public class ShopFragment extends Fragment {
 
             product_recyclerView = rootView.findViewById(R.id.recycleView_Product);
             dbHelper = new DataBaseHelper(getActivity());
-            
+            nike_recycleView=rootView.findViewById(R.id.recycleView_nike);
+            adidas_recycleView=rootView.findViewById(R.id.recycleView_Adidas);
+
             //Get all Product data from db.
             getData(rootView);
+            getNike(rootView);
+            getAdidas(rootView);
 
 
             return rootView;
         }catch(Exception ex){
             Log.d("SHOP FRAGMENT", ex.getMessage());
             return null;
+        }
+    }
+
+    private void getAdidas(View rootView) {
+        try {
+            productAdapter = new ProductAdapter(dbHelper.getAllAdidasData());
+            adidas_recycleView.setAdapter(productAdapter);
+            adidas_recycleView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+
+        } catch (Exception ex){
+            Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void getNike(View rootView) {
+        try {
+            productAdapter = new ProductAdapter(dbHelper.getAllNikeData());
+            nike_recycleView.setAdapter(productAdapter);
+            nike_recycleView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+
+        } catch (Exception ex){
+            Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -56,6 +83,7 @@ public class ShopFragment extends Fragment {
         } catch (Exception ex){
             Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
 }
