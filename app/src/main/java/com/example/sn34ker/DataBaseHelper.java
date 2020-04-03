@@ -129,14 +129,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
-    public ArrayList<ProductModel> getAllNikeData(){
+    public ArrayList<ProductModel> getAllNikeData(String choice){
         try{
             SQLiteDatabase db1=getReadableDatabase();
             String[] queryString = {"PRODUCT_ID","PRODUCT_NAME","PRODUCT_BRAND","PRODUCT_TYPE","PRODUCT_PRICE","PRODUCT_US_SIZE","PRODUCT_UPDATE_DATE","PRODUCT_IMAGE"};
             SQLiteDatabase db = this.getReadableDatabase();
             ArrayList<ProductModel> productModelArrayList = new ArrayList<>();
 
-            Cursor objectCursor = db.query("PRODUCT_TABLE",queryString,"PRODUCT_BRAND =?",new String[]{"Nike"},null,null,null);
+            Cursor objectCursor = db.query("PRODUCT_TABLE",queryString,"PRODUCT_BRAND =?",new String[]{choice},null,null,null);
             if(objectCursor.getCount() != 0){
                 while(objectCursor.moveToNext()){
                     int productId = objectCursor.getInt(0);

@@ -63,10 +63,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 TextView productName= myDialog.findViewById(R.id.product_Name_popup);
                 TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
                 TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
+                TextView productSize= myDialog.findViewById(R.id.product_Size_popup);
                 ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
                 productName.setText(productModel.getName());
                 productBrand.setText(productModel.getBrand());
                 productPrice.setText(String.valueOf(productModel.getCA_price()));
+                productSize.setText("SIZE : "+productModel.getUS_Size());
                 productImage.setImageBitmap(productModel.getProduct_image());
                 TextView txtClose=(TextView) myDialog.findViewById(R.id.closeText);
                 txtClose.setOnClickListener(new View.OnClickListener() {
