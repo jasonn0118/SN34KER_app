@@ -16,14 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShopFragment extends Fragment {
     DataBaseHelper dbHelper;
     RecyclerView product_recyclerView,nike_recycleView,adidas_recycleView;
-//    ArrayList<String> product_name, product_brand, product_price;
-//    ArrayList<Byte[]> product_img;
     ProductAdapter productAdapter;
     private static final String TAG = "SHOP FRAGMENT";
 

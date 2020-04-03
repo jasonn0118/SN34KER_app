@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
                 TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
                 ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                Button btnBuy = myDialog.findViewById(R.id.buyButton);
                 productName.setText(productModel.getName());
                 productBrand.setText(productModel.getBrand());
                 productPrice.setText(String.valueOf(productModel.getCA_price()));
@@ -73,6 +75,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     @Override
                     public void onClick(View v) {
                         myDialog.dismiss();
+                    }
+                });
+                btnBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
 
