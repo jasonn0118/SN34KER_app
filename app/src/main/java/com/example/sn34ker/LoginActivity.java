@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Welcome to Sn34ker!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             } else {
-                                Toast.makeText(LoginActivity.this, "Sorry, We couldn't find an user.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "The username or password you entered is invalid", Toast.LENGTH_SHORT).show();
                                 pbLogin.setVisibility(View.GONE);
                             }
                         } catch (Exception ex){

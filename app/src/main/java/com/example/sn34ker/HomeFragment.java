@@ -1,10 +1,13 @@
 package com.example.sn34ker;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.Nullable;
@@ -14,6 +17,7 @@ public class HomeFragment extends Fragment {
 
     View v;
     ViewFlipper imageFlip;
+    TextView email;
 
     public HomeFragment(){
 
@@ -32,6 +36,11 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < img.length; i++){
             flipperImages(img[i]);
         }
+
+        email = v.findViewById(R.id.emailTxtView);
+        email.setText(Html.fromHtml("<a href=\"mailto:sn34ker@gmail.com\">sn34ker@gmail.com</a>"));
+        email.setMovementMethod(LinkMovementMethod.getInstance());
+
         return v;
     }
 

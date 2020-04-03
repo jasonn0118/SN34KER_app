@@ -2,6 +2,8 @@ package com.example.sn34ker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -9,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +29,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void Logout(){
+        fAuth = FirebaseAuth.getInstance();
+        fAuth.signOut();
+        finish();
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.addProduct:
+                startActivity(new Intent(getApplicationContext(), ProductAddActivity.class));
+                return true;
+            case R.id.logOut:
+                Logout();
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
 
             switch (item.getItemId()){
-                case R.id.AddProduct:
-                    startActivity(new Intent(getApplicationContext(), ProductAddActivity.class));
-                    break;
                 case R.id.home:
                     selectedFragment = new HomeFragment();
                     break;
