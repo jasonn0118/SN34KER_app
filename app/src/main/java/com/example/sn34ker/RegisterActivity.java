@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, "User Created.", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             } else{
-                                Toast.makeText(RegisterActivity.this, "Sorry, we couldn't make a user in some reason.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Sorry, we couldn't make a user for some reasons.", Toast.LENGTH_SHORT).show();
                                 pbRegi.setVisibility(View.GONE);
                             }
                         } catch(Exception ex){

@@ -1,11 +1,13 @@
 package com.example.sn34ker;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.Nullable;
@@ -13,10 +15,9 @@ import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
 
-    DataBaseHelper dbHelper;
     View v;
     ViewFlipper imageFlip;
-    Button btnDelete;
+    TextView email;
 
     public HomeFragment(){
 
@@ -29,20 +30,17 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         int img[] = {R.drawable.rsx, R.drawable.yeezy, R.drawable.nikeaf, R.drawable.jair, R.drawable.jretro};
-        btnDelete = v.findViewById(R.id.btnDeleteAll);
-        imageFlip = v.findViewById(R.id.imageFlipper);
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper = new DataBaseHelper(getActivity());
-                dbHelper.deleteAllData();
-            }
-        });
+        imageFlip = v.findViewById(R.id.imageFlipper);
 
         for (int i = 0; i < img.length; i++){
             flipperImages(img[i]);
         }
+
+        email = v.findViewById(R.id.emailTxtView);
+        email.setText(Html.fromHtml("<a href=\"mailto:sn34ker@gmail.com\">sn34ker@gmail.com</a>"));
+        email.setMovementMethod(LinkMovementMethod.getInstance());
+
         return v;
     }
 
