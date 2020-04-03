@@ -129,6 +129,78 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
+    public ArrayList<ProductModel> getAllNikeData(){
+        try{
+            SQLiteDatabase db1=getReadableDatabase();
+            String[] queryString = {"PRODUCT_ID","PRODUCT_NAME","PRODUCT_BRAND","PRODUCT_TYPE","PRODUCT_PRICE","PRODUCT_US_SIZE","PRODUCT_UPDATE_DATE","PRODUCT_IMAGE"};
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<ProductModel> productModelArrayList = new ArrayList<>();
+
+            Cursor objectCursor = db.query("PRODUCT_TABLE",queryString,"PRODUCT_BRAND =?",new String[]{"Nike"},null,null,null);
+            if(objectCursor.getCount() != 0){
+                while(objectCursor.moveToNext()){
+                    int productId = objectCursor.getInt(0);
+                    String productName = objectCursor.getString(1);
+                    String productBrand = objectCursor.getString(2);
+                    String productType = objectCursor.getString(3);
+                    Double productPrice = objectCursor.getDouble(4);
+                    Double productSize = objectCursor.getDouble(5);
+                    String productUpdateDate = objectCursor.getString(6);
+                    byte[] productImage = objectCursor.getBlob(7);
+
+                    Bitmap objectBitMap = BitmapFactory.decodeByteArray(productImage, 0, productImage.length);
+
+                    productModelArrayList.add(new ProductModel(productId, objectBitMap, productName, productBrand, productType, productPrice, productSize, productUpdateDate));
+                }
+
+                return  productModelArrayList;
+            } else{
+                Log.d("DATABASE HELPER", "Did not call the getAllData method.");
+                return null;
+            }
+
+        } catch (Exception ex) {
+            Log.d("DATABASE HELPER", ex.getMessage());
+            return null;
+        }
+    }
+    public ArrayList<ProductModel> getAllAdidasData(){
+        try{
+            SQLiteDatabase db1=getReadableDatabase();
+            String[] queryString = {"PRODUCT_ID","PRODUCT_NAME","PRODUCT_BRAND","PRODUCT_TYPE","PRODUCT_PRICE","PRODUCT_US_SIZE","PRODUCT_UPDATE_DATE","PRODUCT_IMAGE"};
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<ProductModel> productModelArrayList = new ArrayList<>();
+
+            Cursor objectCursor = db.query("PRODUCT_TABLE",queryString,"PRODUCT_BRAND =?",new String[]{"adidas"},null,null,null);
+            if(objectCursor.getCount() != 0){
+                while(objectCursor.moveToNext()){
+                    int productId = objectCursor.getInt(0);
+                    String productName = objectCursor.getString(1);
+                    String productBrand = objectCursor.getString(2);
+                    String productType = objectCursor.getString(3);
+                    Double productPrice = objectCursor.getDouble(4);
+                    Double productSize = objectCursor.getDouble(5);
+                    String productUpdateDate = objectCursor.getString(6);
+                    byte[] productImage = objectCursor.getBlob(7);
+
+                    Bitmap objectBitMap = BitmapFactory.decodeByteArray(productImage, 0, productImage.length);
+
+                    productModelArrayList.add(new ProductModel(productId, objectBitMap, productName, productBrand, productType, productPrice, productSize, productUpdateDate));
+                }
+
+                return  productModelArrayList;
+            } else{
+                Log.d("DATABASE HELPER", "Did not call the getAllData method.");
+                return null;
+            }
+
+        } catch (Exception ex) {
+            Log.d("DATABASE HELPER", ex.getMessage());
+            return null;
+        }
+    }
+
+
 
     public void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
