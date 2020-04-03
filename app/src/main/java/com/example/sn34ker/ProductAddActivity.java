@@ -28,10 +28,10 @@ import java.util.List;
 public class ProductAddActivity extends AppCompatActivity {
 
     ImageView ivProduct;
-    EditText etProductName, etProductBrand, etProductCAPrice, etProductSize;
-    Spinner spProductType;
+    EditText etProductName,  etProductCAPrice, etProductSize;
+    Spinner spProductType,spProductBrand;
     Button btnSaveProduct;
-    String currentDate, selectedType, selectedPicName;
+    String currentDate, selectedType,selectedBrand, selectedPicName;
 
     private static final int PICK_IMAGE_REQUEST = 80;
     private Uri imageFilePath;
@@ -43,7 +43,7 @@ public class ProductAddActivity extends AppCompatActivity {
 
         ivProduct = findViewById(R.id.imgProduct);
         etProductName = findViewById(R.id.etProductName);
-        etProductBrand = findViewById(R.id.etProductBrand);
+        spProductBrand = findViewById(R.id.etProductBrand);
         etProductCAPrice = findViewById(R.id.etProcuctPrice);
         etProductSize = findViewById(R.id.etProductUsSize);
         spProductType = findViewById(R.id.spProductType);
@@ -53,6 +53,34 @@ public class ProductAddActivity extends AppCompatActivity {
         final Date curDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         currentDate = df.format(curDate); //current formatted date.
+        List<String> sneakerBrands=new ArrayList<>();
+        sneakerBrands.add(0,"Select Sneaker Brand");
+        sneakerBrands.add("Adidas");
+        sneakerBrands.add("Nike");
+        sneakerBrands.add("Under Armour");
+        sneakerBrands.add("Jordan");
+        sneakerBrands.add("Puma");
+        sneakerBrands.add("New Balance");
+        ArrayAdapter<String> brandAdapter=new ArrayAdapter<String>(
+                this,R.layout.support_simple_spinner_dropdown_item,sneakerBrands);
+        spProductBrand.setAdapter(brandAdapter);
+        spProductBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    Toast.makeText(ProductAddActivity.this, "Please Select one of sneaker Brand.", Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedBrand = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(ProductAddActivity.this, selectedBrand + " Selected.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         final List<String> sneakerType = new ArrayList<>();
         sneakerType.add(0,"Select Sneaker Type");
@@ -66,8 +94,7 @@ public class ProductAddActivity extends AppCompatActivity {
         sneakerType.add("Extras");
 
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(
-                this, R.layout.support_simple_spinner_dropdown_item, sneakerType
-        );
+                this, R.layout.support_simple_spinner_dropdown_item, sneakerType);
         spProductType.setAdapter(typeAdapter);
         spProductType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -91,7 +118,7 @@ public class ProductAddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ProductModel myProductModel;
                 try{
-                    myProductModel = new ProductModel(-1, imageToStore, etProductName.getText().toString().trim(), etProductBrand.getText().toString().trim(), selectedType,
+                    myProductModel = new ProductModel(-1, imageToStore, etProductName.getText().toString().trim(), selectedBrand, selectedType,
                             Double.parseDouble(etProductCAPrice.getText().toString().trim()), Double.parseDouble(etProductSize.getText().toString().trim()), currentDate);
                     Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_LONG).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
