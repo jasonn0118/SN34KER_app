@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".ProductAddActivity">
 
     <TextView
@@ -11,18 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtAddProduct"
-        android:textStyle="bold"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.060000002" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <EditText
         android:id="@+id/etProductName"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/etProductName"
@@ -34,8 +35,8 @@
     <EditText
         android:id="@+id/etProductBrand"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/etProductBrand"
         android:inputType="textPersonName"
@@ -47,7 +48,7 @@
         android:id="@+id/spProductType"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etProductBrand" />
@@ -55,8 +56,8 @@
     <EditText
         android:id="@+id/etProcuctPrice"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/etProductPrice"
         android:inputType="numberDecimal"
@@ -67,8 +68,8 @@
     <EditText
         android:id="@+id/etProductUsSize"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/etProductUsSize"
         android:inputType="numberDecimal"
@@ -76,14 +77,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etProcuctPrice" />
 
+    <ImageView
+        android:id="@+id/imgProduct"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="30dp"
+        android:onClick="chooseImage"
+        android:src="@drawable/picture_here"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etProductUsSize" />
+
     <Button
         android:id="@+id/btnSaveProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="36dp"
         android:text="@string/btnSaveProduct"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etProductUsSize" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProduct" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

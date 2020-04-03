@@ -1,12 +1,15 @@
 package com.example.sn34ker;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,76 +19,111 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.sn34ker.datamodels.ProductModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+    Dialog myDialog;
 
-    private Context context;
-//    Fragment fragment;
-    private ArrayList product_name, product_brand, product_img, product_price;
-    Animation translate_anim;
     private static final String TAG = "Product Adapter";
 
-    // TODO: img handle.
-    public ProductAdapter(Context context, ArrayList product_name, ArrayList product_brand, ArrayList product_price) {
-        this.context = context;
-//        this.fragment = fragment;
-        this.product_name = product_name;
-        this.product_brand = product_brand;
-//        this.product_img = product_img;
-        this.product_price = product_price;
+    private ArrayList<ProductModel> productModelList;
+    ProductModel productModel;
+    int cc;
+
+
+    public ProductAdapter(ArrayList<ProductModel> productModelList) {
+        this.productModelList = productModelList;
     }
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.single_sneaker, parent, false);
+    public ProductViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
 
-        return new ProductViewHolder(view);
+
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View view = inflater.inflate(R.layout.single_sneaker, parent, false);
+        final ProductViewHolder vHolder=new ProductViewHolder(view);
+
+        myDialog=new Dialog(parent.getContext());
+        myDialog.setContentView(R.layout.layout_popup);
+
+
+        vHolder.myRowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productModel = productModelList.get(vHolder.getAdapterPosition());
+                //cc=vHolder.getAdapterPosition();
+                Toast.makeText(parent.getContext(), " "+vHolder.getAdapterPosition(), Toast.LENGTH_LONG).show();
+                TextView productName= myDialog.findViewById(R.id.product_Name_popup);
+                TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
+                TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
+                ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                productName.setText(productModel.getName());
+                productBrand.setText(productModel.getBrand());
+                productPrice.setText(String.valueOf(productModel.getCA_price()));
+                productImage.setImageBitmap(productModel.getProduct_image());
+                TextView txtClose=(TextView) myDialog.findViewById(R.id.closeText);
+                txtClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myDialog.dismiss();
+                    }
+                });
+
+                myDialog.show();
+
+
+            }
+        });
+
+        return vHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, final int position) {
-        holder.txtProductName.setText(String.valueOf(product_name.get(position)));
-        holder.txtProductBrand.setText(String.valueOf(product_brand.get(position)));
-        holder.txtProductPrice.setText(String.valueOf(product_price.get(position)));
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        productModel = productModelList.get(position);
+        holder.txtProductName.setText(productModel.getName());
+        holder.txtProductBrand.setText(productModel.getBrand());
+        holder.txtProductPrice.setText(String.valueOf(productModel.getCA_price()));
+        holder.productCirImg.setImageBitmap(productModel.getProduct_image());
+        //holder.productName.setText(productModel.getName());
+        //holder.productBrand.setText(productModel.getBrand());
 
-//        Glide.with(context)
-//                .asBitmap()
-//                .load()
 
-//        holder.productCirImg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "onClick: clicked img. " + product_name.get(position));
-//                Toast.makeText(context, "product: "+product_name.get(position) , Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     @Override
     public int getItemCount() {
-        return product_name.size();
+
+        return null != productModelList ? productModelList.size(): 0;
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder {
+
+    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+        Dialog myDialog;
+
         CircleImageView productCirImg;
         TextView txtProductName, txtProductBrand, txtProductPrice;
         LinearLayout myRowLayout;
+        //TextView productName,productBrand;
 
-        public ProductViewHolder(View itemView){
+        public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-//            productCirImg = itemView.findViewById(R.id.product_image);
+            productCirImg = itemView.findViewById(R.id.product_image);
             txtProductName = itemView.findViewById(R.id.product_name);
             txtProductBrand = itemView.findViewById(R.id.product_brand);
             txtProductPrice = itemView.findViewById(R.id.product_price);
-            translate_anim = AnimationUtils.loadAnimation(context, R.anim.animation);
-            myRowLayout = itemView.findViewById(R.id.productRowView);
-
+            myRowLayout=itemView.findViewById(R.id.productRowView);
+            //productName= myDialog.findViewById(R.id.product_Name_popup);
+           // productBrand= myDialog.findViewById(R.id.product_Brand_popup);
+            //productImage=myDialog.findViewById(R.id.product_image_popup);
         }
     }
+
 }
