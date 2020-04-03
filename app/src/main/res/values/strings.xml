@@ -20,6 +20,7 @@
     <string name="devsTxtView">Our Developers</string>
     <string name="btnSelectProduct">Select Picture</string>
     <string name="close">X</string>
+    <string name="emailTxtView">sn34ker@gmail.com</string>
 
     <string-array name="sneakerType">
         <item>Athletic Kick</item>
