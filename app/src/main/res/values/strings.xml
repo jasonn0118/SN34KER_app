@@ -19,6 +19,7 @@
     <string name="btnSaveProduct">Save</string>
     <string name="devsTxtView">Our Developers</string>
     <string name="emailTxtView">sn34ker@gmail.com</string>
+    <string name="deteleButton">DELETE</string>
 
     <string-array name="sneakerType">
         <item>Athletic Kick</item>

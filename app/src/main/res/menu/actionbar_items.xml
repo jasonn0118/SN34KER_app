@@ -9,9 +9,16 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/userUpdate"
+        android:icon="@drawable/ic_user"
+        android:orderInCategory="200"
+        android:title="User"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/logOut"
         android:icon="@drawable/logout"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:title="Account"
         app:showAsAction="always"/>
 
