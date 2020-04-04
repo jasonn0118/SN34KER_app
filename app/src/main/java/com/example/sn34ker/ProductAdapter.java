@@ -2,7 +2,9 @@ package com.example.sn34ker;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +48,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
 
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(R.layout.single_sneaker, parent, false);
         final ProductViewHolder vHolder=new ProductViewHolder(view);
@@ -61,11 +62,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 productModel = productModelList.get(vHolder.getAdapterPosition());
                 //cc=vHolder.getAdapterPosition();
                 Toast.makeText(parent.getContext(), " "+vHolder.getAdapterPosition(), Toast.LENGTH_LONG).show();
-                TextView productName= myDialog.findViewById(R.id.product_Name_popup);
-                TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
-                TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
-                TextView productSize= myDialog.findViewById(R.id.product_Size_popup);
-                ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                final TextView productName= myDialog.findViewById(R.id.product_Name_popup);
+                final TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
+                final TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
+                final TextView productSize= myDialog.findViewById(R.id.product_Size_popup);
+                final ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                Button buyButton = myDialog.findViewById(R.id.buyButton);
                 productName.setText(productModel.getName());
                 productBrand.setText(productModel.getBrand());
                 productPrice.setText(String.valueOf(productModel.getCA_price()));
@@ -76,6 +78,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     @Override
                     public void onClick(View v) {
                         myDialog.dismiss();
+                    }
+                });
+                buyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = productName.getText().toString();
+                        String brand = productBrand.getText().toString();
+                        String size = productSize.getText().toString();
+                        String price = productPrice.getText().toString();
+
+                        Intent orderPage = new Intent(parent.getContext(), com.example.sn34ker.OrderPage.class);
+                        orderPage.putExtra("NAME", name);
+                        orderPage.putExtra("BRAND", brand);
+                        orderPage.putExtra("SIZE", size);
+                        orderPage.putExtra("PRICE", price);
+                        parent.getContext().startActivity(orderPage);
                     }
                 });
 
@@ -97,8 +115,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.productCirImg.setImageBitmap(productModel.getProduct_image());
         //holder.productName.setText(productModel.getName());
         //holder.productBrand.setText(productModel.getBrand());
-
-
     }
 
     @Override
