@@ -3,7 +3,7 @@ package com.example.sn34ker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,11 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sn34ker.datamodels.OrderTableModel;
-import com.example.sn34ker.datamodels.ProductModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class OrderPage extends AppCompatActivity {
+
 
     ImageView orderImage;
     TextView orderName;
@@ -52,6 +52,7 @@ public class OrderPage extends AppCompatActivity {
         orderBrand.setText(getIntent().getStringExtra("BRAND"));
         orderSize.setText(getIntent().getStringExtra("SIZE"));
         orderPrice.setText(getIntent().getStringExtra("PRICE"));
+        orderImage.setImageDrawable(new BitmapDrawable(getResources(),ProductAdapter.getBitmap_Transfer()));
 
 
 
