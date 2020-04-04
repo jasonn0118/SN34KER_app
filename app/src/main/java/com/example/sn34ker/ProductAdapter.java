@@ -85,13 +85,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     public void onClick(View v) {
                         String name = productName.getText().toString();
                         String brand = productBrand.getText().toString();
-                        String size = productSize.getText().toString();
+                        Double size = productModel.getUS_Size();
+                        String proSize=""+size;
                         String price = productPrice.getText().toString();
+                        int productId=productModel.getId();
+                        String proId=""+productId;
+                        //Toast.makeText(parent.getContext(), ""+productId, Toast.LENGTH_SHORT).show();
 
                         Intent orderPage = new Intent(parent.getContext(), com.example.sn34ker.OrderPage.class);
+                        orderPage.putExtra("PRODUCTID",proId);
                         orderPage.putExtra("NAME", name);
                         orderPage.putExtra("BRAND", brand);
-                        orderPage.putExtra("SIZE", size);
+                        orderPage.putExtra("SIZE", proSize);
                         orderPage.putExtra("PRICE", price);
                         parent.getContext().startActivity(orderPage);
                     }
