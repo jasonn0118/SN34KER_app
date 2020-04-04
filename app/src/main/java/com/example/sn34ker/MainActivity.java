@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logOut:
                 Logout();
                 return true;
+            case R.id.userUpdate:
+                startActivity(new Intent(getApplicationContext(), UpdateUser.class));
+                return true;
             default: return super.onOptionsItemSelected(item);
         }
     }
