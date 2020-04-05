@@ -81,7 +81,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addProductOne(ProductModel productModel){
+    public boolean addOne(ProductModel productModel){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -259,7 +259,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteUserAllData(){
+    public void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+USER_TABLE);
     }

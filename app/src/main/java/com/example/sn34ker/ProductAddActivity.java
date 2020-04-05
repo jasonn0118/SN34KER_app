@@ -130,7 +130,7 @@ public class ProductAddActivity extends AppCompatActivity {
                 }
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(ProductAddActivity.this);
-                boolean success = dataBaseHelper.addProductOne(myProductModel);
+                boolean success = dataBaseHelper.addOne(myProductModel);
 
                 Toast.makeText(ProductAddActivity.this, "Is Success? "+success, Toast.LENGTH_SHORT).show();
             }
