@@ -55,48 +55,59 @@ public class OrderPage extends AppCompatActivity {
         orderImage.setImageDrawable(new BitmapDrawable(getResources(),ProductAdapter.getBitmap_Transfer()));
 
 
-
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                        String id = currentUser.getUid();
-                        String currentUserEmail = currentUser.getEmail();
-                String name = cusName.getText().toString();
-                String productName=orderName.getText().toString();
-                String productBrand=orderBrand.getText().toString();
-                Double productSize=Double.parseDouble(orderSize.getText().toString());
-                Double productPrice=Double.parseDouble(orderPrice.getText().toString());
-                String address = cusAdd.getText().toString();
-                String pos = cusPOS.getText().toString();
-                String cardNum= cardNumber.getText().toString();
-                int pinCode=Integer.parseInt(pin.getText().toString());
-                int expDat=Integer.parseInt(expDate.getText().toString());
-                int produxtId=Integer.parseInt(getIntent().getStringExtra("PRODUCTID"));
-                Toast.makeText(OrderPage.this, ""+produxtId, Toast.LENGTH_SHORT).show();
-                OrderTableModel order1;
-
-                try {
-                    order1=new OrderTableModel(-1,produxtId,pinCode,expDat,name,address,pos,cardNum,id,productName,productBrand,productPrice,productSize);
-                    Toast.makeText(OrderPage.this, order1.toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(OrderPage.this, ConfirmationPage.class);
-                    intent.putExtra("NAME", name);
-                    intent.putExtra("ADDRESS", address);
-                    intent.putExtra("POS", pos);
-
-                    startActivity(intent);
+                if (cusName.getText().toString().equals("") || cusAdd.getText().toString().equals("") || cusPOS.getText().toString().equals("") || cardNumber.getText().toString().equals("") || pin.getText().toString().equals("") || expDate.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "All fields must be entered", Toast.LENGTH_SHORT).show();
                 }
-                catch (Exception e)
-                {
-                    Toast.makeText(OrderPage.this, "Sometthing went Wrong", Toast.LENGTH_SHORT).show();
-                    order1=new OrderTableModel(-1,0,0,0,"error","error","error",
-                            "error","error","error","error",0,0);
-
-
+                else if (cardNumber.getText().toString().length() != 9){
+                    Toast.makeText(getApplicationContext(), "Card number must have 9 digits", Toast.LENGTH_SHORT).show();
                 }
-                DataBaseHelper dataBaseHelper=new DataBaseHelper(OrderPage.this);
-                boolean success = dataBaseHelper.addOrderOne(order1);
-                Toast.makeText(OrderPage.this, "the outcome is ? "+success, Toast.LENGTH_SHORT).show();
+                else if (pin.getText().toString().length() != 3){
+                    Toast.makeText(getApplicationContext(), "Pin number must have 3 digits", Toast.LENGTH_SHORT).show();
+                }
+                else if (expDate.getText().toString().length() != 8){
+                    Toast.makeText(getApplicationContext(), "Please follow our date format: MMDDYYYY", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String id = currentUser.getUid();
+                    String currentUserEmail = currentUser.getEmail();
+                    String name = cusName.getText().toString();
+                    String productName = orderName.getText().toString();
+                    String productBrand = orderBrand.getText().toString();
+                    Double productSize = Double.parseDouble(orderSize.getText().toString());
+                    Double productPrice = Double.parseDouble(orderPrice.getText().toString());
+                    String address = cusAdd.getText().toString();
+                    String pos = cusPOS.getText().toString();
+                    String cardNum = cardNumber.getText().toString();
+                    int pinCode = Integer.parseInt(pin.getText().toString());
+                    int expDat = Integer.parseInt(expDate.getText().toString());
+                    int produxtId = Integer.parseInt(getIntent().getStringExtra("PRODUCTID"));
+                    Toast.makeText(OrderPage.this, "" + produxtId, Toast.LENGTH_SHORT).show();
+                    OrderTableModel order1;
+
+                    try {
+                        order1 = new OrderTableModel(-1, produxtId, pinCode, expDat, name, address, pos, cardNum, id, productName, productBrand, productPrice, productSize);
+                        Toast.makeText(OrderPage.this, order1.toString(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(OrderPage.this, ConfirmationPage.class);
+                        intent.putExtra("NAME", name);
+                        intent.putExtra("ADDRESS", address);
+                        intent.putExtra("POS", pos);
+
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(OrderPage.this, "Sometthing went Wrong", Toast.LENGTH_SHORT).show();
+                        order1 = new OrderTableModel(-1, 0, 0, 0, "error", "error", "error",
+                                "error", "error", "error", "error", 0, 0);
+
+
+                    }
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(OrderPage.this);
+                    boolean success = dataBaseHelper.addOrderOne(order1);
+                    Toast.makeText(OrderPage.this, "the outcome is ? " + success, Toast.LENGTH_SHORT).show();
+                }
 
                 
             }

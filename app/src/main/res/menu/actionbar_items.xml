@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/addProduct"
-        android:icon="@drawable/ic_add_product"
-        android:orderInCategory="100"
-        android:title="Adding Products"
-        app:showAsAction="always"/>
 
     <item
-        android:id="@+id/userUpdate"
-        android:icon="@drawable/ic_user"
-        android:orderInCategory="200"
-        android:title="User"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/logOut"
-        android:icon="@drawable/logout"
-        android:orderInCategory="300"
         android:title="Account"
-        app:showAsAction="always"/>
+        android:icon="@drawable/logout">
+        <menu>
+            <item
+                android:id="@+id/addProduct"
+                android:icon="@drawable/ic_add_product"
+                android:orderInCategory="100"
+                android:title="Adding Products"
+                app:showAsAction="always"/>
+
+            <item
+                android:id="@+id/userUpdate"
+                android:icon="@drawable/ic_user"
+                android:orderInCategory="200"
+                android:title="User"
+                app:showAsAction="always"/>
+
+            <item
+                android:id="@+id/logOut"
+                android:icon="@drawable/logout"
+                android:orderInCategory="300"
+                android:title="Logout"
+                app:showAsAction="always"/>
+        </menu>
+    </item>
 
 </menu>
