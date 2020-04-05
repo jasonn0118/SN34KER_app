@@ -1,14 +1,11 @@
 package com.example.sn34ker;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,13 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.sn34ker.datamodels.ProductModel;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -37,6 +30,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     ProductModel productModel;
     int cc;
 
+    private static Bitmap bitmap_Transfer;
+
+    public static Bitmap getBitmap_Transfer() {
+        return bitmap_Transfer;
+    }
+
+    public static void setBitmap_Transfer(Bitmap bitmap_Transfer) {
+        ProductAdapter.bitmap_Transfer = bitmap_Transfer;
+    }
 
     public ProductAdapter(ArrayList<ProductModel> productModelList) {
         this.productModelList = productModelList;
@@ -45,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(R.layout.single_sneaker, parent, false);
@@ -61,11 +62,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 productModel = productModelList.get(vHolder.getAdapterPosition());
                 //cc=vHolder.getAdapterPosition();
                 Toast.makeText(parent.getContext(), " "+vHolder.getAdapterPosition(), Toast.LENGTH_LONG).show();
-                TextView productName= myDialog.findViewById(R.id.product_Name_popup);
-                TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
-                TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
-                TextView productSize= myDialog.findViewById(R.id.product_Size_popup);
-                ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                final TextView productName= myDialog.findViewById(R.id.product_Name_popup);
+                final TextView productBrand= myDialog.findViewById(R.id.product_Brand_popup);
+                final TextView productPrice= myDialog.findViewById(R.id.product_Price_popup);
+                final TextView productSize= myDialog.findViewById(R.id.product_Size_popup);
+                final ImageView productImage=myDialog.findViewById(R.id.product_image_popup);
+                Button buyButton = myDialog.findViewById(R.id.buyButton);
                 productName.setText(productModel.getName());
                 productBrand.setText(productModel.getBrand());
                 productPrice.setText(String.valueOf(productModel.getCA_price()));
@@ -76,6 +78,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     @Override
                     public void onClick(View v) {
                         myDialog.dismiss();
+                    }
+                });
+                buyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        productImage.buildDrawingCache();
+                        setBitmap_Transfer(productImage.getDrawingCache());
+                        String name = productName.getText().toString();
+                        String brand = productBrand.getText().toString();
+                        Double size = productModel.getUS_Size();
+                        String proSize=""+size;
+                        String price = productPrice.getText().toString();
+                        int productId=productModel.getId();
+                        String proId=""+productId;
+                        //Toast.makeText(parent.getContext(), ""+productId, Toast.LENGTH_SHORT).show();
+
+                        Intent orderPage = new Intent(parent.getContext(), com.example.sn34ker.OrderPage.class);
+                        orderPage.putExtra("PRODUCTID",proId);
+                        orderPage.putExtra("NAME", name);
+                        orderPage.putExtra("BRAND", brand);
+                        orderPage.putExtra("SIZE", proSize);
+                        orderPage.putExtra("PRICE", price);
+                        parent.getContext().startActivity(orderPage);
                     }
                 });
 
@@ -97,8 +123,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.productCirImg.setImageBitmap(productModel.getProduct_image());
         //holder.productName.setText(productModel.getName());
         //holder.productBrand.setText(productModel.getBrand());
-
-
     }
 
     @Override

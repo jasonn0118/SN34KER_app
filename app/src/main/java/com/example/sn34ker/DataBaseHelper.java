@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import androidx.annotation.Nullable;
 
+import com.example.sn34ker.datamodels.OrderTableModel;
 import com.example.sn34ker.datamodels.ProductModel;
 import com.example.sn34ker.datamodels.UserModel;
 
@@ -19,10 +20,12 @@ import java.util.ArrayList;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
 
+
     private static final int DATABASE_VERSION = 4;
 
     //Product table
     public static final String PRODUCT_TABLE = "PRODUCT_TABLE";
+    public static final String ORDER_TABLE = "ORDER_TABLE";
     public static final String COLUMN_PRODUCT_NAME = "PRODUCT_NAME";
     public static final String COLUMN_PRODUCT_BRAND = "PRODUCT_BRAND";
     public static final String COLUMN_PRODUCT_TYPE = "PRODUCT_TYPE";
@@ -30,7 +33,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PRODUCT_US_SIZE = "PRODUCT_US_SIZE";
     public static final String COLUMN_PRODUCT_UPDATE_DATE = "PRODUCT_UPDATE_DATE";
     public static final String COLUMN_PRODUCT_ID = "PRODUCT_ID";
+    public static final String COLUMN_ORDER_ID = "ORDER_ID";
+    public static final String COLUMN_CUSTOMER_ID = "CUSTOMER_ID";
+    public static final String COLUMN_CUSTOMER_ADDRESS = "CUSTOMER_ADDRESS";
+    public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
+    public static final String COLUMN_CUSTOMER_POSTALCODE = "CUSTOMER_POSTALCODE";
+    public static final String COLUMN_CUSTOMER_CARDNUMBER = "CUSTOMER_CARDNUMBER";
+    public static final String COLUMN_CUSTOMER_PIN = "CUSTOMER_PIN";
+    public static final String COLUMN_CUSTOMER_EXPDATE = "CUSTOMER_EXPDATE";
     public static final String COLUMN_PRODUCT_IMAGE = "PRODUCT_IMAGE";
+
 
     //User table
     public static final String USER_TABLE = "USER_TABLE";
@@ -50,6 +62,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private ByteArrayOutputStream byteArrayOutputStream, userByteArrayOutputStream;
     private byte[] imageInBytes, userImageInBytes;
 
+    String NEW_TABLE_FOR_ORDER="CREATE TABLE "+ORDER_TABLE+"("+COLUMN_ORDER_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, "+COLUMN_CUSTOMER_ID+ " TEXT, "
+            +COLUMN_PRODUCT_ID + " INTEGER, "+ COLUMN_PRODUCT_NAME + " TEXT, "+ COLUMN_PRODUCT_BRAND + " TEXT, "+ COLUMN_PRODUCT_PRICE + " DECIMAL, "
+            +COLUMN_PRODUCT_US_SIZE + " DECIMAL, "+COLUMN_CUSTOMER_ADDRESS+" TEXT, " +COLUMN_CUSTOMER_NAME+" TEXT, "+COLUMN_CUSTOMER_POSTALCODE+" TEXT, "
+            +COLUMN_CUSTOMER_CARDNUMBER+" TEXT,"+COLUMN_CUSTOMER_PIN+" INTEGER, " +COLUMN_CUSTOMER_EXPDATE+" INTEGER)";
+
+
     private static final String DATABASE_ALTER_IMAGE = "ALTER TABLE " + PRODUCT_TABLE + " ADD COLUMN " + COLUMN_PRODUCT_IMAGE + " BLOB";
 
     private static final String CREATE_USER_TABLE = "CREATE TABLE " + USER_TABLE + " (" + COLUMN_USER_ID + " STRING, " +
@@ -65,7 +83,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + PRODUCT_TABLE + " (" + COLUMN_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_PRODUCT_NAME + " TEXT, " +
                 COLUMN_PRODUCT_BRAND + " TEXT, " + COLUMN_PRODUCT_TYPE + " TEXT, " + COLUMN_PRODUCT_PRICE + " DECIMAL, " + COLUMN_PRODUCT_US_SIZE + " DECIMAL, " + COLUMN_PRODUCT_UPDATE_DATE + " DATE)";
-
         db.execSQL(createTableStatement);
     }
 
@@ -76,7 +93,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(oldVersion<2){
             db.execSQL(DATABASE_ALTER_IMAGE);
         }
-        if(oldVersion<4){
+
+        if(oldVersion<3)
+        {
+            db.execSQL(NEW_TABLE_FOR_ORDER);
+        }
+        if(oldVersion<4) {
             db.execSQL(CREATE_USER_TABLE);
         }
     }
@@ -101,6 +123,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PRODUCT_UPDATE_DATE, productModel.getUpdatedDate());
 
         long insert = db.insert(PRODUCT_TABLE,null,cv);
+
+        if(insert == -1){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    public boolean addOrderOne(OrderTableModel oneOrder){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+
+        cv.put(COLUMN_CUSTOMER_ID, oneOrder.getCustomerId());
+        cv.put(COLUMN_PRODUCT_ID, oneOrder.getProductId());
+        cv.put(COLUMN_PRODUCT_NAME, oneOrder.getProductName());
+        cv.put(COLUMN_PRODUCT_BRAND, oneOrder.getProductBrand());
+        cv.put(COLUMN_PRODUCT_PRICE, oneOrder.getCA_price());
+        cv.put(COLUMN_PRODUCT_US_SIZE, oneOrder.getUS_Size());
+        cv.put(COLUMN_CUSTOMER_ADDRESS, oneOrder.getCustomerAddress());
+        cv.put(COLUMN_CUSTOMER_NAME, oneOrder.getCustomerName());
+        cv.put(COLUMN_CUSTOMER_POSTALCODE, oneOrder.getPostalCode());
+        cv.put(COLUMN_CUSTOMER_CARDNUMBER, oneOrder.getCreditCardNumber());
+        cv.put(COLUMN_CUSTOMER_PIN, oneOrder.getPin());
+        cv.put(COLUMN_CUSTOMER_EXPDATE, oneOrder.getCardExpDate());
+
+        long insert = db.insert(ORDER_TABLE,null,cv);
 
         if(insert == -1){
             return false;
@@ -259,13 +309,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteAllData(){
+    public void deleteUserAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+USER_TABLE);
     }
 
+    public void deleteAllData(){
 
-    public void deleteProductAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+PRODUCT_TABLE);
     }

@@ -22,8 +22,23 @@
     <string name="close">X</string>
     <string name="emailTxtView">sn34ker@gmail.com</string>
     <string name="deteleButton">DELETE</string>
+
     <string name="txtUserTitle">Update User</string>
     <string name="txtAddress">Personal Address</string>
+
+    <string name="orderTxtView">Your Order</string>
+    <string name="orderConfirm">Your Order</string>
+    <string name="infoTxtView">Personal Information</string>
+    <string name="nameEditTxt">First name and Last name</string>
+    <string name="cusAdd">Address</string>
+    <string name="cusPOS">Postal Code</string>
+    <string name="cusCard">Credit card number</string>
+    <string name="cusPin">PIN</string>
+    <string name="cusExpDate">Card Exp Date</string>
+    <string name="confirmButton">Place Order</string>
+    <string name="txtViewTitle">Confirmation</string>
+    <string name="txtViewBill">Billing Address</string>
+    <string name="btnShop">Continue Shopping</string>
 
     <string-array name="sneakerType">
         <item>Athletic Kick</item>
