@@ -6,6 +6,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
         email = v.findViewById(R.id.emailTxtView);
         email.setText(Html.fromHtml("<a href=\"mailto:sn34ker@gmail.com\">sn34ker@gmail.com</a>"));
         email.setMovementMethod(LinkMovementMethod.getInstance());
+
 
         return v;
     }
