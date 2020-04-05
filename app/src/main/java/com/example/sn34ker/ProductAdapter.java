@@ -1,16 +1,11 @@
 package com.example.sn34ker;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,13 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.sn34ker.datamodels.ProductModel;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -39,6 +30,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     ProductModel productModel;
     int cc;
 
+    private static Bitmap bitmap_Transfer;
+
+    public static Bitmap getBitmap_Transfer() {
+        return bitmap_Transfer;
+    }
+
+    public static void setBitmap_Transfer(Bitmap bitmap_Transfer) {
+        ProductAdapter.bitmap_Transfer = bitmap_Transfer;
+    }
 
     public ProductAdapter(ArrayList<ProductModel> productModelList) {
         this.productModelList = productModelList;
@@ -83,6 +83,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 buyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        productImage.buildDrawingCache();
+                        setBitmap_Transfer(productImage.getDrawingCache());
                         String name = productName.getText().toString();
                         String brand = productBrand.getText().toString();
                         Double size = productModel.getUS_Size();
