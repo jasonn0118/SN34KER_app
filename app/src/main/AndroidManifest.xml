@@ -11,9 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".UpdateUserActivity"></activity>
+
         <activity android:name=".ConfirmationPage"></activity>
         <activity android:name=".OrderPage" />
-        <activity android:name=".UpdateUser" />
+
         <activity android:name=".ProductAddActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">

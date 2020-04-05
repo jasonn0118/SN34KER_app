@@ -31,7 +31,7 @@ public class ProductAddActivity extends AppCompatActivity {
     EditText etProductName,  etProductCAPrice, etProductSize;
     Spinner spProductType,spProductBrand;
     Button btnSaveProduct;
-    String currentDate, selectedType,selectedBrand, selectedPicName;
+    String currentDate, selectedType,selectedBrand;
 
     private static final int PICK_IMAGE_REQUEST = 80;
     private Uri imageFilePath;

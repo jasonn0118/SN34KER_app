@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.sn34ker.datamodels.OrderTableModel;
 import com.example.sn34ker.datamodels.ProductModel;
+import com.example.sn34ker.datamodels.UserModel;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ import java.util.ArrayList;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 3;
 
+    private static final int DATABASE_VERSION = 4;
+
+    //Product table
     public static final String PRODUCT_TABLE = "PRODUCT_TABLE";
     public static final String ORDER_TABLE = "ORDER_TABLE";
     public static final String COLUMN_PRODUCT_NAME = "PRODUCT_NAME";
@@ -39,15 +42,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CUSTOMER_PIN = "CUSTOMER_PIN";
     public static final String COLUMN_CUSTOMER_EXPDATE = "CUSTOMER_EXPDATE";
     public static final String COLUMN_PRODUCT_IMAGE = "PRODUCT_IMAGE";
-    private ByteArrayOutputStream byteArrayOutputStream;
-    private byte[] imageInBytes;
+
+
+    //User table
+    public static final String USER_TABLE = "USER_TABLE";
+    public static final String COLUMN_USER_ID = "COLUMN_USER_ID";
+    public static final String COLUMN_USER_FIRSTNAME = "COLUMN_USER_FIRSTNAME";
+    public static final String COLUMN_USER_LASTNAME = "COLUMN_USER_LASTNAME";
+    public static final String COLUMN_USER_GENDER = "COLUMN_USER_GENDER";
+    public static final String COLUMN_USER_EMAIL = "COLUMN_USER_EMAIL";
+    public static final String COLUMN_USER_STREET_2 = "COLUMN_USER_STREET2";
+    public static final String COLUMN_USER_STREET_1 = "COLUMN_USER_STREET1";
+    public static final String COLUMN_USER_CITY = "COLUMN_USER_CITY";
+    public static final String COLUMN_USER_PROVINCE = "COLUMN_USER_PROVINCE";
+    public static final String COLUMN_USER_POSTCODE = "COLUMN_USER_POSTCODE";
+    public static final String COLUMN_USER_DOB = "COLUMN_USER_DOB";
+    public static final String COLUMN_USER_PROFILE = "COLUMN_USER_PROFILE";
+
+    private ByteArrayOutputStream byteArrayOutputStream, userByteArrayOutputStream;
+    private byte[] imageInBytes, userImageInBytes;
+
     String NEW_TABLE_FOR_ORDER="CREATE TABLE "+ORDER_TABLE+"("+COLUMN_ORDER_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, "+COLUMN_CUSTOMER_ID+ " TEXT, "
             +COLUMN_PRODUCT_ID + " INTEGER, "+ COLUMN_PRODUCT_NAME + " TEXT, "+ COLUMN_PRODUCT_BRAND + " TEXT, "+ COLUMN_PRODUCT_PRICE + " DECIMAL, "
             +COLUMN_PRODUCT_US_SIZE + " DECIMAL, "+COLUMN_CUSTOMER_ADDRESS+" TEXT, " +COLUMN_CUSTOMER_NAME+" TEXT, "+COLUMN_CUSTOMER_POSTALCODE+" TEXT, "
             +COLUMN_CUSTOMER_CARDNUMBER+" TEXT,"+COLUMN_CUSTOMER_PIN+" INTEGER, " +COLUMN_CUSTOMER_EXPDATE+" INTEGER)";
 
+
     private static final String DATABASE_ALTER_IMAGE = "ALTER TABLE " + PRODUCT_TABLE + " ADD COLUMN " + COLUMN_PRODUCT_IMAGE + " BLOB";
 
+    private static final String CREATE_USER_TABLE = "CREATE TABLE " + USER_TABLE + " (" + COLUMN_USER_ID + " STRING, " +
+            COLUMN_USER_FIRSTNAME + " TEXT, " + COLUMN_USER_LASTNAME + " TEXT, " + COLUMN_USER_GENDER + " TEXT, " +
+            COLUMN_USER_EMAIL + " TEXT, " + COLUMN_USER_STREET_2 + " TEXT, " + COLUMN_USER_STREET_1 + " TEXT, " + COLUMN_USER_CITY + " TEXT, " +
+            COLUMN_USER_PROVINCE + " TEXT, " + COLUMN_USER_POSTCODE + " TEXT, " + COLUMN_USER_DOB + " DATE, " + COLUMN_USER_PROFILE + " BLOB)";
     public DataBaseHelper(@Nullable Context context) {
         super(context, "sn34ker.db", null, DATABASE_VERSION);
     }
@@ -67,9 +93,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(oldVersion<2){
             db.execSQL(DATABASE_ALTER_IMAGE);
         }
+
         if(oldVersion<3)
         {
             db.execSQL(NEW_TABLE_FOR_ORDER);
+        }
+        if(oldVersion<4) {
+            db.execSQL(CREATE_USER_TABLE);
         }
     }
 
@@ -128,6 +158,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         else{
             return true;
         }
+    }
+
+    public boolean updateUserToDb(UserModel userModel){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Bitmap imageToStoreBitmap = userModel.getUser_profile_image();
+
+        userByteArrayOutputStream = new ByteArrayOutputStream();
+        imageToStoreBitmap.compress(Bitmap.CompressFormat.JPEG, 20, userByteArrayOutputStream);
+        userImageInBytes = userByteArrayOutputStream.toByteArray();
+
+        cv.put(COLUMN_USER_ID, userModel.getUserId());
+        cv.put(COLUMN_USER_FIRSTNAME, userModel.getFirstName());
+        cv.put(COLUMN_USER_LASTNAME, userModel.getLastName());
+        cv.put(COLUMN_USER_GENDER, userModel.getGender());
+        cv.put(COLUMN_USER_EMAIL, userModel.getEmail());
+        cv.put(COLUMN_USER_STREET_2, userModel.getStreet2());
+        cv.put(COLUMN_USER_STREET_1, userModel.getStreet());
+        cv.put(COLUMN_USER_CITY, userModel.getCity());
+        cv.put(COLUMN_USER_PROVINCE, userModel.getProvince());
+        cv.put(COLUMN_USER_POSTCODE, userModel.getPostalCode());
+        cv.put(COLUMN_USER_DOB, userModel.getDateOfBirth());
+        cv.put(COLUMN_USER_PROFILE, userImageInBytes);
+
+        long insertIndb = db.insert(USER_TABLE, null, cv);
+
+        if(insertIndb == -1){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+
     }
 
     public Cursor readAllProductData(){
@@ -245,10 +309,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
+    public void deleteUserAllData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+USER_TABLE);
+    }
 
     public void deleteAllData(){
+
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+PRODUCT_TABLE);
     }
