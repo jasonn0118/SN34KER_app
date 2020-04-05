@@ -1,10 +1,13 @@
 package com.example.sn34ker;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,6 +35,7 @@ public class ProductAddActivity extends AppCompatActivity {
     Spinner spProductType,spProductBrand;
     Button btnSaveProduct;
     String currentDate, selectedType,selectedBrand;
+    Boolean flag = false;
 
     private static final int PICK_IMAGE_REQUEST = 80;
     private Uri imageFilePath;
@@ -53,7 +57,7 @@ public class ProductAddActivity extends AppCompatActivity {
         final Date curDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         currentDate = df.format(curDate); //current formatted date.
-        List<String> sneakerBrands=new ArrayList<>();
+        final List<String> sneakerBrands=new ArrayList<>();
         sneakerBrands.add(0,"Select Sneaker Brand");
         sneakerBrands.add("Adidas");
         sneakerBrands.add("Nike");
@@ -67,13 +71,8 @@ public class ProductAddActivity extends AppCompatActivity {
         spProductBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    Toast.makeText(ProductAddActivity.this, "Please Select one of sneaker Brand.", Toast.LENGTH_SHORT).show();
-                } else {
                     selectedBrand = parent.getItemAtPosition(position).toString();
                     Toast.makeText(ProductAddActivity.this, selectedBrand + " Selected.", Toast.LENGTH_SHORT).show();
-                }
-
             }
 
             @Override
@@ -99,12 +98,8 @@ public class ProductAddActivity extends AppCompatActivity {
         spProductType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    Toast.makeText(ProductAddActivity.this, "Please Select one of sneaker type.", Toast.LENGTH_SHORT).show();
-                } else {
                     selectedType = parent.getItemAtPosition(position).toString();
                     Toast.makeText(ProductAddActivity.this, selectedType + " Selected.", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -113,31 +108,42 @@ public class ProductAddActivity extends AppCompatActivity {
             }
         });
 
+
+
         btnSaveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProductModel myProductModel;
-                try{
-                    myProductModel = new ProductModel(-1, imageToStore, etProductName.getText().toString().trim(), selectedBrand, selectedType,
-                            Double.parseDouble(etProductCAPrice.getText().toString().trim()), Double.parseDouble(etProductSize.getText().toString().trim()), currentDate);
-                    Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
-
-                } catch (Exception ex){
-                    Toast.makeText(ProductAddActivity.this, "Something went wrong. "+ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    myProductModel = new ProductModel(-1, imageToStore,"error", "error", "error", 0, 0, "error");
+                if (etProductName.getText().toString().equals("") || etProductCAPrice.getText().toString().equals("") || etProductSize.getText().toString().equals("")
+                        || spProductBrand.getSelectedItemPosition() == 0 || spProductType.getSelectedItemPosition() == 0) {
+                    Toast.makeText(getApplicationContext(), "All fields must be selected", Toast.LENGTH_SHORT).show();
+                } else if (flag == false){
+                    Toast.makeText(getApplicationContext(), "Please choose an image", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    ProductModel myProductModel;
+                    try {
+                        myProductModel = new ProductModel(-1, imageToStore, etProductName.getText().toString().trim(), selectedBrand, selectedType,
+                                Double.parseDouble(etProductCAPrice.getText().toString().trim()), Double.parseDouble(etProductSize.getText().toString().trim()), currentDate);
+                        Toast.makeText(ProductAddActivity.this, myProductModel.toString(), Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
 
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(ProductAddActivity.this);
-                boolean success = dataBaseHelper.addOne(myProductModel);
+                    } catch (Exception ex) {
+                        Toast.makeText(ProductAddActivity.this, "Something went wrong. " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        myProductModel = new ProductModel(-1, imageToStore, "error", "error", "error", 0, 0, "error");
+                    }
 
-                Toast.makeText(ProductAddActivity.this, "Is Success? "+success, Toast.LENGTH_SHORT).show();
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(ProductAddActivity.this);
+                    boolean success = dataBaseHelper.addOne(myProductModel);
+
+                    Toast.makeText(ProductAddActivity.this, "Is Success? " + success, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
     }
+
     public void chooseImage (View objectView){
 
         try{
@@ -151,6 +157,18 @@ public class ProductAddActivity extends AppCompatActivity {
 
     }
 
+    /*private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        //boolean hasImage = (drawable != null);
+
+        if ((drawable instanceof BitmapDrawable)) {
+            return flag = true;
+        }
+        else {
+            return flag = false;
+        }
+    }*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         try {
@@ -161,6 +179,7 @@ public class ProductAddActivity extends AppCompatActivity {
 
                 ivProduct.setImageBitmap(imageToStore);
                 ivProduct.setVisibility(View.VISIBLE);
+                flag = true;
             }
         } catch (Exception ex){
             Toast.makeText(this, "onActivityResult: " +ex.getMessage(), Toast.LENGTH_SHORT).show();

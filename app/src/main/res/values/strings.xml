@@ -34,7 +34,7 @@
     <string name="cusPOS">Postal Code</string>
     <string name="cusCard">Credit card number</string>
     <string name="cusPin">PIN</string>
-    <string name="cusExpDate">Card Exp Date</string>
+    <string name="cusExpDate">Card Exp Date (MMDDYYYY)</string>
     <string name="confirmButton">Place Order</string>
     <string name="txtViewTitle">Confirmation</string>
     <string name="txtViewBill">Billing Address</string>

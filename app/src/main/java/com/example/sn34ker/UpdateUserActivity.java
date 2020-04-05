@@ -1,10 +1,14 @@
 package com.example.sn34ker;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringDef;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -37,6 +41,7 @@ public class UpdateUserActivity extends AppCompatActivity {
     TextView txtEmail;
     String selectedGen,  selectedProv;
     Button btnUserUpdate;
+    Boolean flag = false;
 
     private static final int PICK_IMAGE_REQUEST = 20;
     private Uri imageFilePath;
@@ -131,24 +136,35 @@ public class UpdateUserActivity extends AppCompatActivity {
         btnUserUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserModel myUserModel;
-                try{
-                    myUserModel = new UserModel(currentUser.getUid(),etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(),
-                           selectedGen, currentUser.getEmail(), etStreet2.getText().toString().trim(), etStreet1.getText().toString().trim(),
-                            etCity.getText().toString().trim(), selectedProv, etPostalCode.getText().toString().trim(),etDob.getText().toString(),
-                            imageToStore);
-                    Toast.makeText(UpdateUserActivity.this, myUserModel.toString(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
-                }catch (Exception ex){
-                    Toast.makeText(UpdateUserActivity.this, "Something wrong with "+ex.getMessage(), Toast.LENGTH_LONG).show();
-                    myUserModel = new UserModel("error", "error", "error", "error","error","error","error",
-                            "error","error","error","error",imageToStore);
+                if (etFirstName.getText().toString().equals("") || etLastName.getText().toString().equals("") || spGender.getSelectedItemPosition() == 0 || etDob.getText().toString().equals("")
+                    || etStreet1.getText().toString().equals("") || etStreet2.getText().toString().equals("") || etCity.getText().toString().equals("") || spProvince.getSelectedItemPosition() == 0
+                    || etPostalCode.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "All fields must be entered", Toast.LENGTH_SHORT).show();
+                } else if (etDob.getText().toString().length() != 8) {
+                    Toast.makeText(getApplicationContext(), "The format is: DD-MM-YYYY ", Toast.LENGTH_SHORT);
+                } else if (flag == false){
+                    Toast.makeText(getApplicationContext(), "Please choose an image", Toast.LENGTH_SHORT).show();
                 }
-                DataBaseHelper userDataBaseHelper = new DataBaseHelper(UpdateUserActivity.this);
-                boolean success = userDataBaseHelper.updateUserToDb(myUserModel);
+                else {
+                    UserModel myUserModel;
+                    try {
+                        myUserModel = new UserModel(currentUser.getUid(), etFirstName.getText().toString().trim(), etLastName.getText().toString().trim(),
+                                selectedGen, currentUser.getEmail(), etStreet2.getText().toString().trim(), etStreet1.getText().toString().trim(),
+                                etCity.getText().toString().trim(), selectedProv, etPostalCode.getText().toString().trim(), etDob.getText().toString(),
+                                imageToStore);
+                        Toast.makeText(UpdateUserActivity.this, myUserModel.toString(), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    } catch (Exception ex) {
+                        Toast.makeText(UpdateUserActivity.this, "Something wrong with " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                        myUserModel = new UserModel("error", "error", "error", "error", "error", "error", "error",
+                                "error", "error", "error", "error", imageToStore);
+                    }
+                    DataBaseHelper userDataBaseHelper = new DataBaseHelper(UpdateUserActivity.this);
+                    boolean success = userDataBaseHelper.updateUserToDb(myUserModel);
 
-                Toast.makeText(UpdateUserActivity.this, "Is Success? "+ success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateUserActivity.this, "Is Success? " + success, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -166,6 +182,17 @@ public class UpdateUserActivity extends AppCompatActivity {
 
     }
 
+    /*private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return flag = true;
+    }*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,6 +203,7 @@ public class UpdateUserActivity extends AppCompatActivity {
 
                 ivUserProfile.setImageBitmap(imageToStore);
                 ivUserProfile.setVisibility(View.VISIBLE);
+                flag = true;
             }
         } catch (Exception ex){
             Toast.makeText(this, "onActivityResult: " +ex.getMessage(), Toast.LENGTH_SHORT).show();
