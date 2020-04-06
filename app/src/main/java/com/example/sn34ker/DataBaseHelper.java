@@ -13,9 +13,12 @@ import androidx.annotation.Nullable;
 import com.example.sn34ker.datamodels.OrderTableModel;
 import com.example.sn34ker.datamodels.ProductModel;
 import com.example.sn34ker.datamodels.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -192,6 +195,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
 
+    }
+
+    public List<String> searchCurrentUser(String curUserID){
+        String selectQuery = "SELECT  * FROM " + USER_TABLE + " WHERE  " + COLUMN_USER_ID + " = '" + curUserID +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        List<String> user = new ArrayList<>();
+        if(db != null){
+            cursor = db.rawQuery(selectQuery,null);
+        }
+        while (cursor.moveToNext()){
+            user.add(cursor.getString(1));//FirstName
+            user.add(cursor.getString(2));//LastName
+            user.add(cursor.getString(5));//Street2
+            user.add(cursor.getString(6));//Street1
+            user.add(cursor.getString(7));//City
+            user.add(cursor.getString(8));//Province
+            user.add(cursor.getString(9));//Postal Code.
+        }
+
+
+        return user;
     }
 
     public Cursor readAllProductData(){

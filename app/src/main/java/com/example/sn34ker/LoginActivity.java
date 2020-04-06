@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -69,7 +72,19 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         try{
                             if(task.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "Welcome to Sn34ker!", Toast.LENGTH_SHORT).show();
+                                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                                String curUserId = currentUser.getUid();
+                                DataBaseHelper mydb = new DataBaseHelper(LoginActivity.this);
+
+                                //Get Current user info to List.
+                                List<String> myUser = mydb.searchCurrentUser(curUserId);
+
+                                if(!myUser.isEmpty()){
+                                    Toast.makeText(LoginActivity.this, "Welcome back "+ myUser.get(0)+"!", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(LoginActivity.this, "Welcome to Sn34ker!", Toast.LENGTH_SHORT).show();
+                                }
+
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             } else {
                                 Toast.makeText(LoginActivity.this, "The username or password you entered is invalid", Toast.LENGTH_SHORT).show();
