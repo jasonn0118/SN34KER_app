@@ -1,4 +1,4 @@
-package com.example.sn34ker;
+package com.example.sn34ker.adapter;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sn34ker.R;
 import com.example.sn34ker.datamodels.ProductModel;
 
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                         orderPage.putExtra("SIZE", proSize);
                         orderPage.putExtra("PRICE", price);
                         parent.getContext().startActivity(orderPage);
+
                     }
                 });
 
@@ -127,7 +129,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public int getItemCount() {
-
         return null != productModelList ? productModelList.size(): 0;
     }
 

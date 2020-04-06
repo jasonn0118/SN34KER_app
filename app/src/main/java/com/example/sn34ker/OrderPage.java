@@ -3,8 +3,10 @@ package com.example.sn34ker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,9 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sn34ker.adapter.ProductAdapter;
 import com.example.sn34ker.datamodels.OrderTableModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class OrderPage extends AppCompatActivity {
 
@@ -35,6 +40,8 @@ public class OrderPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_page);
 
+        DataBaseHelper db = new DataBaseHelper(this);
+
         orderImage = findViewById(R.id.orderImage);
         orderName = findViewById(R.id.orderName);
         orderBrand = findViewById(R.id.orderBrand);
@@ -52,7 +59,21 @@ public class OrderPage extends AppCompatActivity {
         orderBrand.setText(getIntent().getStringExtra("BRAND"));
         orderSize.setText(getIntent().getStringExtra("SIZE"));
         orderPrice.setText(getIntent().getStringExtra("PRICE"));
-        orderImage.setImageDrawable(new BitmapDrawable(getResources(),ProductAdapter.getBitmap_Transfer()));
+        orderImage.setImageDrawable(new BitmapDrawable(getResources(), ProductAdapter.getBitmap_Transfer()));
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String curUserId = currentUser.getUid();
+        DataBaseHelper mydb = new DataBaseHelper(this);
+
+        //Get Current user info to List.
+        List<String> myUser = mydb.searchCurrentUser(curUserId);
+//        Log.d("ORDER PAGE", myUser.get(0));
+
+        if(!myUser.isEmpty()){
+            cusName.setText(myUser.get(0)+" "+myUser.get(1));
+            cusAdd.setText(myUser.get(2)+" "+ myUser.get(3)+" "+ myUser.get(4)+" "+ myUser.get(5));
+            cusPOS.setText(myUser.get(6));
+        }
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +105,12 @@ public class OrderPage extends AppCompatActivity {
                     String cardNum = cardNumber.getText().toString();
                     int pinCode = Integer.parseInt(pin.getText().toString());
                     int expDat = Integer.parseInt(expDate.getText().toString());
-                    int produxtId = Integer.parseInt(getIntent().getStringExtra("PRODUCTID"));
-                    Toast.makeText(OrderPage.this, "" + produxtId, Toast.LENGTH_SHORT).show();
+                    int productId = Integer.parseInt(getIntent().getStringExtra("PRODUCTID"));
+                    Toast.makeText(OrderPage.this, "" + productId, Toast.LENGTH_SHORT).show();
                     OrderTableModel order1;
 
                     try {
-                        order1 = new OrderTableModel(-1, produxtId, pinCode, expDat, name, address, pos, cardNum, id, productName, productBrand, productPrice, productSize);
+                        order1 = new OrderTableModel(-1, productId, pinCode, expDat, name, address, pos, cardNum, id, productName, productBrand, productPrice, productSize);
                         Toast.makeText(OrderPage.this, order1.toString(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(OrderPage.this, ConfirmationPage.class);
                         intent.putExtra("NAME", name);

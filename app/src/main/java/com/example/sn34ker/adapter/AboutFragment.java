@@ -1,4 +1,4 @@
-package com.example.sn34ker;
+package com.example.sn34ker.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +11,9 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.sn34ker.AboutCustomAdapter;
+import com.example.sn34ker.R;
 
 import java.net.URI;
 import java.util.ArrayList;

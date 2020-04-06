@@ -11,9 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.sn34ker.adapter.AboutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,10 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//        String id = currentUser.getUid();
-//        String currentUserEmail = currentUser.getEmail();
-//        Toast.makeText(this, "current User: "+currentUserEmail, Toast.LENGTH_SHORT).show();
+
     }
 
     private void Logout(){
